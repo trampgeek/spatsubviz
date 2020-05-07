@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="./spatsub.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://unpkg.com/v-tooltip"></script>
+    <title>Spatial subdivision visualiser</title>
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>Spatial subdivision visualiser</h1>
+        <p>This app helps with visualising the behaviour of Kd-tree and Quadtree
+           spatial subdivision algorithms</p>
+        <div>
+            <label for="algorithm-select">Algorithm
+                <select id="algorithm-select" v-model="algorithm" v-on:change="start">
+                    <option value="kdtree">Kd-tree</option>
+                    <option value="quadtree">Quadtree</option>
+                </select>
+            </label>
+            <label class="file" for="file-input">Upload points
+                <input id="file-input" type='file' ref='file' @change="upload" @click="resetfile"/>
+            </label>
+            <a href="#" @click="togglefileuploadhelp=!togglefileuploadhelp">{{ togglefileuploadhelp ? 'Hide' : 'Show' }} file upload help</a>
+            <div  v-show="togglefileuploadhelp">
+            <p>Reload point set from a file. File must be a sequence of unique x y integer pairs in the range [0, 100], preferably whitespace separated though all non-numeric characters are ignored.
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary" v-on:click="clear">Clear</button>
+            <button type="button" class="btn btn-primary"
+                     v-on:click="addPoints">Add {{ countString}} points</button>
+            <label class="slider" for="numpoints-slider"># points
+            <input type="range" id='numpoints-slider' name="countslider" min="1" max="100" v-model="countString" />
+            </label>
+
+            <div id="spatsub"></div>
+            <div>
+                <label class="slider" for="maxdepth-slider"> Depth limit: {{ depth }}</label>
+                <input type="range" id='maxdepth-slider' name="depthslider" min="0" max="15" v-model="depthString" />
+                <br>
+                {{ numPoints }} points, {{numLeaves }} leaves, max leaf depth: {{maxLeafDepth}}.
+
+            </div>
+        </div>
+    </div>
+
+
+<script data-main="build/spatsub.js" src="./require.js"></script>
+</body>
+
+</html>
